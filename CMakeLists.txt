@@ -6,6 +6,7 @@ project(project)
 set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(lib)
+add_subdirectory(math_glm)
 
 
 set(CMAKE_AUTOMOC ON)
@@ -29,5 +30,6 @@ target_link_libraries(project
         Qt::Gui
         Qt::Widgets
         cg_lib
+        math_glm
         )
 
