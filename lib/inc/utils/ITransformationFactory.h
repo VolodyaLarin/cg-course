@@ -13,15 +13,13 @@
 
 class ITransformationFactory: public IFactory<ITransformation> {
 public:
-    virtual std::unique_ptr<ITransformation> createPosition(const ICoord&) = 0;
+    virtual std::unique_ptr<ITransformation> createPosition(const ICoord&) const= 0;
 
-    virtual std::unique_ptr<ITransformation> createRotation(const ICoord&) = 0;
+    virtual std::unique_ptr<ITransformation> createRotation(const ICoord&) const= 0;
 
-    virtual std::unique_ptr<ITransformation> createScale(const ICoord&) = 0;
+    virtual std::unique_ptr<ITransformation> createScale(const ICoord&) const = 0;
 
-    virtual std::unique_ptr<ITransformation> createPerspective(ICoord::type)= 0;
-
-    std::unique_ptr<ITransformation> create() override = 0;
+    virtual std::unique_ptr<ITransformation> createPerspective(ICoord::type) const = 0;
 };
 
 #endif //_ITRANSFORMATIONFACTORY_H

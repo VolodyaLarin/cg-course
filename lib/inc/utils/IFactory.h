@@ -7,10 +7,10 @@
 #define _IFACTORY_H
 #include <memory>
 
-template<class T >
+template<class T>
 class IFactory {
 public:
-    virtual std::unique_ptr<T> create() = 0;
+    virtual std::unique_ptr<T> create() const = 0;
 };
 
 #endif //_IFACTORY_H

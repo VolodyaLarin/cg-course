@@ -1,5 +1,7 @@
 #include "scene/Polygon.h"
 
+#include <utility>
+
 Polygon::iterator Polygon::begin() {
     return _coords.begin();
 }
@@ -23,3 +25,5 @@ Polygon::const_iterator Polygon::cbegin() const {
 Polygon::const_iterator Polygon::cend() const {
     return _coords.cend();
 }
+
+Polygon::Polygon(std::vector<CoordPtr> coords) : _coords(std::move(coords)) {}

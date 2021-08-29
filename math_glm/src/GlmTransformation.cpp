@@ -14,11 +14,11 @@ std::unique_ptr<ICoord> GlmTransformation::apply(const ICoord &coord) {
 
 ITransformation &GlmTransformation::join(const ITransformation &transformation) {
     try {
-        auto& glmTransf = dynamic_cast<const GlmTransformation&>(transformation);
+        auto &glmTransf = dynamic_cast<const GlmTransformation &>(transformation);
 
-        matrix *= glmTransf.matrix;
+        matrix = glmTransf.matrix * matrix;
     }
-    catch (std::bad_cast& err) {
+    catch (std::bad_cast &err) {
         throw GlmException("GlmTransformation can works only with GlmTransformation classes");
     }
 

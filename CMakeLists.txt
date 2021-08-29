@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(lib)
 add_subdirectory(math_glm)
+add_subdirectory(ogl_drawer)
 
 
 set(CMAKE_AUTOMOC ON)
@@ -21,6 +22,7 @@ find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+        OpenGLWidgets
         REQUIRED)
 
 
@@ -29,7 +31,9 @@ target_link_libraries(project
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        Qt::OpenGLWidgets
         cg_lib
         math_glm
+        ogl_drawer
         )
 

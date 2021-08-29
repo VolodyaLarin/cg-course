@@ -15,6 +15,10 @@ public:
     using iterator = std::vector<Polygon>::iterator;
     using const_iterator = std::vector<Polygon>::const_iterator;
 
+
+    using Ptr = std::shared_ptr<Model>;
+    using UPtr = std::unique_ptr<Model>;
+
     explicit Model(std::vector<Polygon>&& polygons);
 
     iterator begin();

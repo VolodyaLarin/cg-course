@@ -17,6 +17,8 @@ public:
     using iterator = std::vector<CoordPtr>::iterator;
     using const_iterator = std::vector<CoordPtr>::const_iterator;
 
+    explicit Polygon(std::vector<CoordPtr> coords);
+
     iterator begin();
     iterator end();
 
