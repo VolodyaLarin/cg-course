@@ -12,13 +12,15 @@
 class IColor {
 public:
 
-    virtual float getR() const = 0;
+    [[nodiscard]] virtual float getR() const = 0;
 
-    virtual float getG() const = 0;
+    [[nodiscard]] virtual float getG() const = 0;
 
-    virtual float getB() const = 0;
+    [[nodiscard]] virtual float getB() const = 0;
 
-    virtual float getA() const = 0;
+    [[nodiscard]] virtual float getA() const = 0;
+
+    [[nodiscard]] virtual std::string getHEX() const = 0;
 
     virtual void setR(float) = 0;
 
@@ -27,7 +29,9 @@ public:
     virtual void setB(float) = 0;
 
     virtual void setA(float) = 0;
-    
+
+    virtual void setHEX(const std::string &) = 0;
+
     [[nodiscard]] virtual std::unique_ptr<IColor> clone() const = 0;
 };
 

@@ -3,14 +3,16 @@
  */
 
 
-#include <utils/CoordPtr.h>
+#include <utils/CoordWrapper.h>
 #include "scene/AnimatedCoordProperty.h"
 
 std::shared_ptr<ICoord> AnimatedCoordProperty::get(Time t) const {
-    if (t < _beginTime) return _beginValue->clone();
-    if (t > _endTime) return _endValue->clone();
+    if (t <= _beginTime) return _beginValue->clone();
+    if (t >= _endTime) return _endValue->clone();
 
-    auto b = CoordPtr(_beginValue), e = CoordPtr(_endValue);
+    auto test = _beginValue->diff(*_endValue);
+
+    auto b = CoordWrapper(_beginValue), e = CoordWrapper(_endValue);
 
     return b + (b - e) / (_beginTime - _endTime) * (t - _beginTime);
 }
@@ -25,10 +27,10 @@ void AnimatedCoordProperty::setEnd(Time t, const ICoord &c) {
     _endValue = c.clone();
 }
 
-std::pair<Time, const ICoord &> AnimatedCoordProperty::getBegin() const {
-    return {_beginTime, *_beginValue};
+std::pair<Time, const ICoord::UPtr &> AnimatedCoordProperty::getBegin() const {
+    return {_beginTime, _beginValue};
 }
 
-std::pair<Time, const ICoord &> AnimatedCoordProperty::getEnd() const {
-    return {_endTime, *_endValue};
+std::pair<Time, const ICoord::UPtr &> AnimatedCoordProperty::getEnd() const {
+    return {_endTime, _endValue};
 }

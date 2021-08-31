@@ -26,4 +26,10 @@ Polygon::const_iterator Polygon::cend() const {
     return _coords.cend();
 }
 
-Polygon::Polygon(std::vector<CoordPtr> coords) : _coords(std::move(coords)) {}
+
+const ICoord &Polygon::getNormal() const {
+    return *_normal;
+}
+
+Polygon::Polygon(std::vector<CoordPtr> coords, Polygon::CoordPtr normal) : _coords(std::move(coords)),
+                                                                                         _normal(std::move(normal)) {}

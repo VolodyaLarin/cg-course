@@ -28,6 +28,10 @@ public:
 
     [[nodiscard]] virtual SceneObjectType getType() const = 0;
 
+    [[nodiscard]] virtual const std::string& getName() const = 0;
+
+    virtual void setName(const std::string& string) = 0;
+
     [[nodiscard]] virtual const IColor& getColor() const = 0;
 
     virtual void setColor(const IColor&) = 0;

@@ -16,9 +16,9 @@ public:
 void setBegin(Time, const ICoord&);
 void setEnd(Time, const ICoord&);
     
-[[nodiscard]] std::pair<Time, const ICoord &> getBegin() const ;
+[[nodiscard]] std::pair<Time, const ICoord::UPtr &> getBegin() const ;
     
-[[nodiscard]] std::pair<Time, const ICoord &> getEnd() const ;
+[[nodiscard]] std::pair<Time, const ICoord::UPtr &> getEnd() const ;
 
 private: 
     Time _beginTime;

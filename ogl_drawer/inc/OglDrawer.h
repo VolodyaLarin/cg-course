@@ -15,6 +15,9 @@ private:
     int _width = 800;
     int _height = 600;
 
+    long last_time = 0, last_time_2 = 0;
+    int frame = 0;
+
     QOpenGLWidget &_widget;
 private:
     void _setOrtho();
@@ -30,6 +33,8 @@ public:
     void clear() override;
 
     void show() override;
+
+    void printFps();
 
     void resize(int w, int h) override;
 

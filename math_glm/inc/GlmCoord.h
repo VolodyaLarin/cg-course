@@ -46,6 +46,16 @@ public:
     [[nodiscard]] UPtr mul(type type) const override;
 
     void mulled(type type) override;
+
+    type scalarProduct(const ICoord &coord) const override;
+
+    UPtr vectorProduct(const ICoord &coord) const override;
+
+    type length() const override;
+
+    void normalize() override;
+
+    UPtr normalized() const override;
 };
 
 

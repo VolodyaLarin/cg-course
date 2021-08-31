@@ -3,11 +3,16 @@
 ITransformation::Ptr Camera::getTransformation(Time t) const {
 
     auto transformation = _transformationFactory->createPosition(*getPosition().get(t)->invert());
+    auto size = getPosition().get(0)->clone();
+    size->setX(0.1);
+    size->setY(0.1);
+    size->setZ(0.1);
 
-    auto rotate = _transformationFactory->createPosition(*BaseSceneObject::getRotation().get(t)->invert());
+    auto scale = _transformationFactory->createScale(*size);
+    auto rotate = _transformationFactory->createRotation(*BaseSceneObject::getRotation().get(t)->invert());
     auto persp = _transformationFactory->createPerspective(_pespK);
 
-    transformation->join(*rotate).join(*persp);
+    transformation->join(*scale).join(*rotate).join(*persp);
 
     return transformation;
 }

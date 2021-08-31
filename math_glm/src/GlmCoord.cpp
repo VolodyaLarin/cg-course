@@ -37,7 +37,9 @@ void GlmCoord::add(const ICoord &coord) {
 }
 
 ICoord::UPtr GlmCoord::diff(const ICoord &coord) const {
-    return std::make_unique<GlmCoord>(vec - GlmCoord(coord).vec);
+    auto rght = GlmCoord(coord).vec;
+    auto res = vec - rght;
+    return std::make_unique<GlmCoord>(res);
 }
 
 void GlmCoord::sub(const ICoord &coord) {
@@ -64,7 +66,32 @@ GlmCoord::GlmCoord(const glm::vec4 &vec) : vec(vec) {}
 
 GlmCoord::GlmCoord(const ICoord & coord) {
     vec.x = coord.getX();
-    vec.y = coord.getX();
-    vec.z = coord.getX();
+    vec.y = coord.getY();
+    vec.z = coord.getZ();
     vec.w = 1;
+}
+
+ICoord::type GlmCoord::scalarProduct(const ICoord &coord) const {
+    return vec.x * coord.getX() + vec.z * coord.getZ() +vec.y * coord.getY();
+}
+
+ICoord::UPtr GlmCoord::vectorProduct(const ICoord &coord) const {
+    ICoord::type
+            x = getY() * coord.getZ() - getZ() * coord.getY(),
+            y = getZ() * coord.getX() - getX() * coord.getZ(),
+            z = getX() * coord.getY() - getY() * coord.getX();
+
+    return std::make_unique<GlmCoord>(x,y,z);
+}
+
+ICoord::type GlmCoord::length() const {
+    return std::hypot(vec.x, vec.y, vec.z);
+}
+
+void GlmCoord::normalize() {
+    vec /= length();
+}
+
+ICoord::UPtr GlmCoord::normalized() const {
+    return std::make_unique<GlmCoord>(vec / length());
 }

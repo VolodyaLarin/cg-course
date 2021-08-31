@@ -1,5 +1,8 @@
 project(cg_lib)
 
+set(CMAKE_CXX_STANDARD 17)
+
+
 set(PROJECT_SOURCE_DIR "./src")
 set(PROJECT_INCLUDE_DIR "./inc")
 

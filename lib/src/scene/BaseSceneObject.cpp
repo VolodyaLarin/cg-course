@@ -37,3 +37,11 @@ const IColor &BaseSceneObject::getColor() const {
 void BaseSceneObject::setColor(const IColor &color) {
     _color = color.clone();
 }
+
+const std::string &BaseSceneObject::getName() const {
+    return _name;
+}
+
+void BaseSceneObject::setName(const std::string &string) {
+    _name = string;
+}

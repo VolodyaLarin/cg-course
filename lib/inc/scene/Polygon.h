@@ -17,7 +17,7 @@ public:
     using iterator = std::vector<CoordPtr>::iterator;
     using const_iterator = std::vector<CoordPtr>::const_iterator;
 
-    explicit Polygon(std::vector<CoordPtr> coords);
+    Polygon(std::vector<CoordPtr> coords, CoordPtr normal);
 
     iterator begin();
     iterator end();
@@ -27,8 +27,12 @@ public:
 
     const_iterator cbegin() const;
     const_iterator cend() const;
-private: 
+
+    const ICoord &getNormal() const;
+
+private:
     std::vector<CoordPtr> _coords;
+    CoordPtr _normal;
 };
 
 #endif //_POLYGON_H

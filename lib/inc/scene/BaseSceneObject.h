@@ -29,11 +29,17 @@ public:
 
     void setColor(const IColor &color) override;
 
+    const std::string &getName() const override;
+
+    void setName(const std::string &string) override;
+
 private:
     AnimatedCoordProperty _position;
     AnimatedCoordProperty _rotation;
     AnimatedCoordProperty _size;
     std::unique_ptr<IColor> _color;
+    std::string _name;
+
 };
 
 #endif //_BASESCENEOBJECT_H

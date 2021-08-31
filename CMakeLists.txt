@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.0)
 project(project)
 
 
@@ -26,7 +26,12 @@ find_package(Qt6 COMPONENTS
         REQUIRED)
 
 
-add_executable(project main.cpp)
+add_executable(project
+        mainwindow.ui
+        main.cpp
+        mainwindow.cpp
+        mainwindow.h
+        MyAnimatedCoordParams.cpp MyAnimatedCoordParams.h MyAnimatedCoordParams.ui)
 target_link_libraries(project
         Qt::Core
         Qt::Gui

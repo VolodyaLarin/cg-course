@@ -42,6 +42,15 @@ public:
 
     virtual void mulled(type) = 0;
 
+    [[nodiscard]] virtual ICoord::type scalarProduct(const ICoord &) const = 0;
+
+    [[nodiscard]] virtual ICoord::UPtr vectorProduct(const ICoord &) const = 0;
+
+    [[nodiscard]] virtual ICoord::type length() const = 0;
+
+    virtual void normalize() = 0;
+    [[nodiscard]] virtual ICoord::UPtr normalized() const = 0;
+
 };
 
 #endif //_ICOORD_H
