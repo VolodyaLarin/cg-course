@@ -6,6 +6,7 @@
 #define PROJECT_OGLWIDGET_H
 
 #include <QOpenGLWidget>
+#include <QOpenGLContext>
 
 #include "OglDrawer.h"
 
@@ -16,6 +17,11 @@ private:
 public:
     explicit OglWidget(QWidget *parent) : QOpenGLWidget(parent)
     {
+        // Anti-Aliasing
+        QSurfaceFormat format;
+        format.setSamples(4);
+        setFormat(format);
+
         drawer = std::make_shared<OglDrawer>(*this);
     }
 
@@ -32,6 +38,8 @@ public:
 
 protected:
     void initializeGL() override {
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
     }
 
     void resizeGL(int w, int h) override {

@@ -13,9 +13,11 @@
 #include <scene/Camera.h>
 #include <iostream>
 #include <filesystem>
-#include <OglColor.h>
 #include <GlmTransformationFactory.h>
 #include <QColorDialog>
+#include <QpColor.h>
+#include <QpWidget.h>
+#include <MatrixBuffer.h>
 
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -23,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->canvas->hide();
 
-    canvas = std::make_shared<OglWidget>(ui->canvas);
+    canvas = std::make_shared<QpWidget>();
     ui->rightLayout->removeWidget(ui->canvas);
     ui->rightLayout->removeItem(ui->playerBox);
     ui->rightLayout->addWidget(canvas.get());
@@ -51,32 +53,41 @@ MainWindow::MainWindow(QWidget *parent)
     camera->position().setBegin(0, GlmCoord(0, 0, 10));
     camera->position().setEnd(120, GlmCoord(0, 0, 30));
 
+    _scene = std::make_shared<Scene>();
 
-    _scene.add(std::static_pointer_cast<ISceneObject>(camera));
-    camera->setColor(OglColor());
+    _scene->add(std::static_pointer_cast<ISceneObject>(camera));
+    camera->setColor(QpColor());
     camera->setName("Камера");
     _currentObject = camera;
 
-    canvas->setDrawFnc([this, camera]() {
+    _renderManager = std::make_shared<RenderManager>();
+    _renderManager->setCamera(camera);
+    _renderManager->setDrawer(canvas->getDrawer());
+    _renderManager->setScene(_scene);
+
+    auto context = std::make_shared<RenderContext>();
+    context->z = std::make_shared<ZBuffer>(0,0,1e10);
+
+    canvas->getDrawer()->setRenderContext(context);
+
+    canvas->setDrawFnc([this]() {
         if (_is_played) {
-            _currentTime += 1 / 30.0f;
+            using namespace std::chrono;
+            auto diff = system_clock::now() - _lastTime;
+            auto ms = duration_cast<milliseconds>(diff);
+
+            _currentTime += ms.count() / 1000.0f;
             if (_currentTime > 120) {
                 _currentTime = 120;
                 _is_played = false;
             }
             renderCurrentTime();
         }
-        canvas->getDrawer()->setCameraTransformation(
-                *camera->getTransformation(_currentTime)
-        );
-        for (auto &obj: _scene) {
-            if (obj->getType().getName() == "Model") {
-                auto model = std::dynamic_pointer_cast<Model>(obj);
-                for (auto &polygon: *model) {
-                    canvas->getDrawer()->drawPolygon(polygon, obj->getColor());
-                }
-            }
-        }
+        _lastTime = std::chrono::system_clock::now();
+
+        _renderManager->getDrawer()->getRenderContext()->time = _currentTime;
+
+        _renderManager->render(_renderManager->getDrawer()->getRenderContext());
     });
 
     widgetTranslate = new MyAnimatedCoordParams([this]() -> AnimatedCoordProperty & {
@@ -111,7 +122,7 @@ void MainWindow::updateObjectsList() {
     int i = 0;
     int currentI = 0;
     auto curObj = _currentObject;
-    for (auto &object: _scene) {
+    for (auto &object: *_scene) {
         ui->objectsList->addItem(
                 QString::fromStdString(object->getName())
         );
@@ -143,16 +154,16 @@ void MainWindow::on_importModel_clicked() {
             msgBox.exec();
         }
 
-        _scene.add(model);
-        model->setColor(OglColor(1, 0, 0));
+        _scene->add(model);
+        model->setColor(QpColor(1, 0, 0));
         model->setName(std::filesystem::path(filename).filename());
 
-        auto zeroACP = [](AnimatedCoordProperty &ac) {
-            ac.setBegin(0, GlmCoord());
-            ac.setEnd(0, GlmCoord());
+        auto zeroACP = [](AnimatedCoordProperty &ac, float value = 0) {
+            ac.setBegin(0, GlmCoord(value, value, value));
+            ac.setEnd(0, GlmCoord(value, value, value));
         };
         zeroACP(model->position());
-        zeroACP(model->size());
+        zeroACP(model->size(), 1);
         zeroACP(model->rotation());
 
         updateObjectsList();
@@ -161,7 +172,7 @@ void MainWindow::on_importModel_clicked() {
 
 void MainWindow::on_objectsList_currentRowChanged(int currentRow) {
     if (currentRow < 0) return;
-    _currentObject = *(_scene.begin() + currentRow);
+    _currentObject = *(_scene->begin() + currentRow);
 
     renderCurrentObjectParameters();
 }
@@ -215,9 +226,9 @@ void MainWindow::on_objectColorChoose_clicked() {
 }
 
 void MainWindow::on_deleteObject_clicked() {
-    for (auto i = _scene.begin(); i != _scene.end(); ++i) {
+    for (auto i = _scene->begin(); i != _scene->end(); ++i) {
         if (*i == _currentObject) {
-            _scene.remove(i);
+            _scene->remove(i);
             updateObjectsList();
             return;
         }

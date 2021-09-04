@@ -15,10 +15,20 @@ public:
 
     void setDrawer(const std::shared_ptr<IDrawer> &drawer);
 
-    void render(RenderContext&);
+    [[nodiscard]] const std::shared_ptr<Camera> &getCamera() const;
+
+    void setCamera(const std::shared_ptr<Camera> &camera);
+
+    [[nodiscard]] const std::shared_ptr<Scene> &getScene() const;
+
+    void setScene(const std::shared_ptr<Scene> &scene);
+
+    void render(const std::shared_ptr<RenderContext> &);
 
 private:
     std::shared_ptr<IDrawer> _drawer;
+    std::shared_ptr<Camera> _camera = nullptr;
+    std::shared_ptr<Scene> _scene = nullptr;
 };
 
 #endif //_RENDERMANAGER_H

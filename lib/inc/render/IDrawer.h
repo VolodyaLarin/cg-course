@@ -10,6 +10,7 @@
 #include "utils/ITransformation.h"
 #include "scene/Polygon.h"
 #include "utils/IBuffer.h"
+#include "RenderContext.h"
 
 class IDrawer {
 public:
@@ -27,6 +28,11 @@ public:
     virtual void resize(int, int) = 0;
 
     virtual IBuffer<IColor> & image() = 0;
+
+    virtual void setRenderContext(std::shared_ptr<RenderContext> context) = 0;
+
+    virtual const std::shared_ptr<RenderContext>& getRenderContext() = 0;
+
 };
 
 #endif //_IDRAWER_H

@@ -4,8 +4,9 @@
 #include <QMainWindow>
 #include <scene/Scene.h>
 #include <loaders/ObjModelLoader.h>
-#include <OglWidget.h>
 #include <QTimer>
+#include <render/RenderManager.h>
+#include <QpWidget.h>
 #include "MyAnimatedCoordParams.h"
 
 QT_BEGIN_NAMESPACE
@@ -48,9 +49,10 @@ private:
     MyAnimatedCoordParams *widgetScale;
     MyAnimatedCoordParams *widgetRotate;
 
-    Scene _scene;
+    std::shared_ptr<Scene> _scene;
+    std::shared_ptr<RenderManager> _renderManager;
     ObjModelLoader loader;
-    std::shared_ptr<OglWidget> canvas = nullptr;
+    std::shared_ptr<QpWidget> canvas = nullptr;
 
     QTimer _timer;
 
@@ -64,6 +66,8 @@ private:
     void renderCurrentObjectParameters();
 
     void renderCurrentTime();
+
+    std::chrono::time_point<std::chrono::system_clock> _lastTime = std::chrono::system_clock::now();
 };
 
 #endif // MAINWINDOW_H

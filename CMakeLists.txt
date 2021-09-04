@@ -7,8 +7,8 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(lib)
 add_subdirectory(math_glm)
-add_subdirectory(ogl_drawer)
-
+#add_subdirectory(ogl_drawer)
+add_subdirectory(qp_drawer)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -39,6 +39,6 @@ target_link_libraries(project
         Qt::OpenGLWidgets
         cg_lib
         math_glm
-        ogl_drawer
+        qp_drawer
         )
 

@@ -15,8 +15,7 @@
 
 class RenderVisitor: public IVisitor {
 public:
-    RenderVisitor(std::shared_ptr<ITransformationFactory> transformationFactory,
-                  std::shared_ptr<RenderContext> context, std::shared_ptr<IDrawer> drawer);
+    RenderVisitor(std::shared_ptr<ITransformationFactory> transformationFactory, std::shared_ptr<IDrawer> drawer);
 
     void visitModel(Model &model) override;
 
@@ -26,11 +25,10 @@ public:
 
 private:
     std::shared_ptr<ITransformationFactory> _transformationFactory;
-    std::shared_ptr<RenderContext> _context;
     std::shared_ptr<IDrawer> _drawer;
     
 
-    void _createObjectTransformation(const ISceneObject&);
+    std::unique_ptr<ITransformation> _createObjectTransformation(const ISceneObject&);
 };
 
 #endif //_RENDERVISITOR_H

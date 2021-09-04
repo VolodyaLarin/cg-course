@@ -39,6 +39,8 @@ public:
     void resize(int w, int h) override;
 
     IBuffer<IColor> &image() override;
+
+    void printAxies();
 };
 
 

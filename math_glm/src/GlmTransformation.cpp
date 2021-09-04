@@ -9,6 +9,8 @@
 
 std::unique_ptr<ICoord> GlmTransformation::apply(const ICoord &coord) {
     auto res = matrix * GlmCoord(coord).vec;
+    res.x /= res.w;
+    res.y /= res.w;
     return std::make_unique<GlmCoord>(res);
 }
 

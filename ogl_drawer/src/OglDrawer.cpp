@@ -78,6 +78,8 @@ void OglDrawer::clear() {
 
 void OglDrawer::show() {
     printFps();
+//    printAxies();
+    
     _widget.doneCurrent();
 }
 
@@ -101,8 +103,7 @@ void OglDrawer::_setOrtho() {
 }
 
 OglDrawer::OglDrawer(QOpenGLWidget &widget) : _widget(widget) {
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+
 }
 
 void OglDrawer::printFps() {
@@ -186,4 +187,32 @@ void OglDrawer::printFps() {
     }
     glPopMatrix();
 
+}
+
+void OglDrawer::printAxies() {
+    static const float length = 5;
+    glColor3f(1.0f, 0, 0);
+    glBegin(GL_LINES);
+    {
+        glVertex3f(0,0,0);
+        glVertex3f(length,0,0);
+    }
+    glEnd();
+
+    glColor3f(0, 1.0f, 0);
+    glBegin(GL_LINES);
+    {
+        glVertex3f(0,0,0);
+        glVertex3f(0,length,0);
+    }
+    glEnd();
+
+
+    glColor3f(0, 0, 1.0f);
+    glBegin(GL_LINES);
+    {
+        glVertex3f(0,0,0);
+        glVertex3f(0,0,length);
+    }
+    glEnd();
 }

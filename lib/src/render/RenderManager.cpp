@@ -1,3 +1,5 @@
+#include <render/RenderVisitor.h>
+#include <thread>
 #include "render/RenderManager.h"
 
 const std::shared_ptr<IDrawer> &RenderManager::getDrawer() const {
@@ -8,6 +10,40 @@ void RenderManager::setDrawer(const std::shared_ptr<IDrawer> &drawer) {
     _drawer = drawer;
 }
 
-void RenderManager::render(RenderContext &) {
+void RenderManager::render(const std::shared_ptr<RenderContext> &context) {
+    auto cameraTransformation = getCamera()->getTransformation(context->time);
 
+    getDrawer()->clear();
+    getDrawer()->setRenderContext(context);
+    getDrawer()->setCameraTransformation(*cameraTransformation);
+
+
+    auto visitor = std::make_shared<RenderVisitor>(
+            cameraTransformation->getFactory(),
+            getDrawer()
+    );
+
+    for (auto &i: *getScene())
+    {
+        i->accept(*visitor);
+    }
+
+    getDrawer()->show();
+
+}
+
+const std::shared_ptr<Camera> &RenderManager::getCamera() const {
+    return _camera;
+}
+
+void RenderManager::setCamera(const std::shared_ptr<Camera> &camera) {
+    _camera = camera;
+}
+
+const std::shared_ptr<Scene> &RenderManager::getScene() const {
+    return _scene;
+}
+
+void RenderManager::setScene(const std::shared_ptr<Scene> &scene) {
+    _scene = scene;
 }

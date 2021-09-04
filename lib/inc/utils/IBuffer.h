@@ -14,11 +14,15 @@ public:
 
     virtual void set(int, int, const T&) = 0;
 
-    virtual void get(int, int) = 0;
+    virtual const T& get(int, int) = 0;
+
+    virtual void resize(int w, int h) = 0;
 
     virtual int getWidth() = 0;
 
     virtual int getHeight() = 0;
+
+    virtual void clear() = 0;
 };
 
 
